@@ -7,8 +7,8 @@ To register params and services in the container you should create a **module**,
 
 This interface is made by 2 metdods:
 
-1. `getBindings` that take the current containerhas argument, it is used to register services and params
-2. `boot` to boot the module, i.e. to run something that should be done once. Method take has argument the current container, so it can be used to do something on boot.
+1. `getBindings` that take the current container as argument, it is used to register services and params
+2. `boot` to boot the module, i.e. to run something that should be done once. Method takes as argument the current container, so it can be used to do something on boot.
 
 
 To register the module, should be used the `addModule` method of container, but **only using `'brain_init'` hook**.
