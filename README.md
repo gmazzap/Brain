@@ -11,7 +11,7 @@ This interface is made by 2 metdods:
 2. `boot` to boot the module, i.e. to run something that should be done once. Method take has argument the current container, so it can be used to do something on boot.
 
 
-To register the module, should me used the `add_module` method of container, but **only using `'brain_init'` hook**.
+To register the module, should be used the `addModule` method of container, but **only using `'brain_init'` hook**.
 
 The `'brain_loaded'` hook is fired when all modules has been loaded.
 
