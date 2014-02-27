@@ -47,7 +47,7 @@ The `'brain_loaded'` hook is fired when all modules has been loaded.
 ###Finally add the module to Brain###
 
     add_action( 'brain_init', function( $brain ) {
-      $brain->addModule( new Test\TestModule );
+      $brain->addModule( new FooModule );
     });
     
     
