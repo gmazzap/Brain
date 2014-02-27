@@ -38,7 +38,7 @@ The `'brain_loaded'` hook is fired when all modules has been loaded.
       }
 
       function boot( Brain\Container $brain ) {
-        add_action( 'loop_start', function() {
+        add_action( 'loop_start', function() use( $brain ) {
           $brain['foo_service']->foo( $brain['foo'] );
         });
       }
