@@ -6,4 +6,6 @@ interface Module {
     function boot( Container $brain );
 
     function getBindings( Container $brain );
+
+    function getPath();
 }
