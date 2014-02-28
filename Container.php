@@ -8,7 +8,7 @@ class Container extends \Pimple {
     private $brain_modules;
 
 
-    public static function boot( \Pimple $container ) {
+    public static function boot( \Pimple $container, $with_modules = TRUE ) {
         if ( is_null( static::$brain ) ) {
             static::$brain = $container;
             static::$brain[ 'embedded' ] = function () {
@@ -16,9 +16,13 @@ class Container extends \Pimple {
             };
             $instance = static::$brain[ 'embedded' ];
             $instance->brain_modules = new \SplObjectStorage;
-            static::bootModules( $instance );
+            if ( $with_modules !== FALSE ) static::bootModules( $instance );
         }
         return static::$brain[ 'embedded' ];
+    }
+
+    public static function flush() {
+        static::$brain = NULL;
     }
 
     public static function instance() {
@@ -33,6 +37,11 @@ class Container extends \Pimple {
             throw new \DomainException;
         }
         $this->brain_modules->attach( $module );
+    }
+
+    public function get( $id = '' ) {
+        if ( ! is_string( $id ) ) throw new \DomainException;
+        return $this[ $id ];
     }
 
     protected static function bootModules( Container $instance ) {
