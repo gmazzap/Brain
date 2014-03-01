@@ -55,8 +55,55 @@ The `'brain_loaded'` hook is fired when all modules has been loaded.
       $brain->addModule( new FooModule );
     });
     
-    
-Note that Brain init itself and its modules on `'after_setup_theme'` with priority 0, a reasonably early hook that can be used in plugin and themes.
-
 See [Pimple docs](http://pimple.sensiolabs.org/) for more info.
+    
+    
+###Get data from Brain###
+
+To get services registered is possible to use the `Brain::instance()` static method and use the array access method of Pimple, something like:
+
+    $brain = Brain::instance();
+    $foo_service = $brain['foo_service'];
+    
+or is possible to use the Brain `get` method, in chaining it with the `instance` method, just like:
+
+    $foo_service = Brain::instance()->get('foo_service');
+    
+
+##Installation##
+
+The package should be installed via [Composer](https://getcomposer.org/).
+In your `composer.json` file, add the repository and require settings, like so:
+
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Giuseppe-Mazzapica/Brain"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "brain/brain": "dev-master"
+    }
+    
+There is no need to explicitly require Pimple, because Brain will require it for you.
+after that just
+
+    $ composer install
+    
+and you are done. See [composer docs](https://getcomposer.org/doc/) for further details.
+
+
+###Note on PHP version###
+
+Pimple supports PHP 5.3+, however I don't want to support anymore that version, so even if (probably) the current version on Brain works with PHP 5.3, is possible that a nearly future release will not, I'll never test it.
+
+##Related WordPress hooks###    
+    
+Brain init itself and its modules on `'after_setup_theme'` with priority 0, a reasonably early hook that can be used in plugin and themes.
+The Brain-related hooks are:
+
+* `'brain_init'` to register modules (see above)
+* `'brain_loaded'` is fired when all modules are loaded
+* `'after_setup_theme'` with priority >= 1 (or any later hook) to get data from the container
 	
