@@ -98,7 +98,7 @@ and you are done. See [composer docs](https://getcomposer.org/doc/) for further 
 
 Pimple supports PHP 5.3+, however I don't want to support anymore that version, so even if (probably) the current version on Brain works with PHP 5.3, is possible that a nearly future release will not, I'll never test it.
 
-##Related WordPress hooks##  
+##Related WordPress hooks##
     
 Brain init itself and its modules on `'after_setup_theme'` with priority 0, a reasonably early hook that can be used in plugin and themes.
 The Brain-related hooks are:
