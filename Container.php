@@ -44,6 +44,11 @@ class Container extends \Pimple {
         return $this[ $id ];
     }
 
+    public function set( $id = '', $value = NULL ) {
+        if ( ! is_string( $id ) ) throw new \DomainException;
+        $this[ $id ] = $value;
+    }
+
     protected static function bootModules( Container $instance ) {
         // use this hook to register modules via Brain\Container::addModule()
         // or to add params/services to container thanks to the instance passed as action argument
