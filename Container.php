@@ -40,12 +40,12 @@ class Container extends \Pimple {
     }
 
     public function get( $id = '' ) {
-        if ( ! is_string( $id ) ) throw new \DomainException;
+        if ( ! is_string( $id ) ) throw new \InvalidArgumentException;
         return $this[ $id ];
     }
 
     public function set( $id = '', $value = NULL ) {
-        if ( ! is_string( $id ) ) throw new \DomainException;
+        if ( ! is_string( $id ) ) throw new \InvalidArgumentException;
         $this[ $id ] = $value;
     }
 
