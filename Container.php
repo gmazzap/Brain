@@ -1,4 +1,5 @@
 <?php
+
 namespace Brain;
 
 class Container extends \Pimple {
@@ -7,18 +8,17 @@ class Container extends \Pimple {
 
     private $brain_modules;
 
-
-    public static function boot( \Pimple $container, $with_modules = TRUE ) {
+    public static function boot( \Pimple $container, $with_modules = TRUE, $with_hooks = TRUE ) {
         if ( is_null( static::$brain ) ) {
             static::$brain = $container;
-            static::$brain[ 'embedded' ] = function () {
+            static::$brain['embedded'] = function () {
                 return new static;
             };
-            $instance = static::$brain[ 'embedded' ];
+            $instance = static::$brain['embedded'];
             $instance->brain_modules = new \SplObjectStorage;
-            if ( $with_modules !== FALSE ) static::bootModules( $instance );
+            if ( $with_modules !== FALSE ) static::bootModules( $instance, $with_hooks );
         }
-        return static::$brain[ 'embedded' ];
+        return static::$brain['embedded'];
     }
 
     public static function flush() {
@@ -26,10 +26,10 @@ class Container extends \Pimple {
     }
 
     public static function instance() {
-        if ( is_null( static::$brain ) || ! isset( static::$brain[ 'embedded' ] ) ) {
+        if ( is_null( static::$brain ) || ! isset( static::$brain['embedded'] ) ) {
             throw new \DomainException;
         }
-        return static::$brain[ 'embedded' ];
+        return static::$brain['embedded'];
     }
 
     public function addModule( Module $module ) {
@@ -41,18 +41,18 @@ class Container extends \Pimple {
 
     public function get( $id = '' ) {
         if ( ! is_string( $id ) ) throw new \InvalidArgumentException;
-        return $this[ $id ];
+        return $this[$id];
     }
 
     public function set( $id = '', $value = NULL ) {
         if ( ! is_string( $id ) ) throw new \InvalidArgumentException;
-        $this[ $id ] = $value;
+        $this[$id] = $value;
     }
 
-    protected static function bootModules( Container $instance ) {
+    protected static function bootModules( Container $instance, $with_hooks = TRUE ) {
         // use this hook to register modules via Brain\Container::addModule()
         // or to add params/services to container thanks to the instance passed as action argument
-        do_action( 'brain_init', $instance );
+        if ( $with_hooks ) do_action( 'brain_init', $instance );
         $instance->brain_modules->rewind();
         while ( $instance->brain_modules->valid() ) {
             $module = $instance->brain_modules->current();
@@ -60,6 +60,7 @@ class Container extends \Pimple {
             $module->boot( $instance );
             $instance->brain_modules->next();
         }
-        do_action( 'brain_loaded', $instance );
+        if ( $with_hooks ) do_action( 'brain_loaded', $instance );
     }
+
 }
