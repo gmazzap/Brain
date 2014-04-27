@@ -4,9 +4,9 @@ namespace Brain;
 
 class Container extends \Pimple {
 
-    private static $brain;
+    protected static $brain;
 
-    private $brain_modules;
+    protected $brain_modules;
 
     public static function boot( \Pimple $container, $with_modules = TRUE, $with_hooks = TRUE ) {
         if ( is_null( static::$brain ) ) {
