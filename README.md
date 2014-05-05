@@ -73,14 +73,9 @@ or is possible to use the Brain `get` method, in chaining it with the `instance`
 ##Installation##
 
 The package should be installed via [Composer](https://getcomposer.org/).
-In your `composer.json` file, add the repository and require settings, like so:
+Brain is available through [packagist](https://packagist.org/), so you only need to add in your `composer.json` the require settings.
+Something like so:
 
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/Giuseppe-Mazzapica/Brain"
-        }
-    ],
     "require": {
         "php": ">=5.4",
         "brain/brain": "dev-master"
