@@ -3,6 +3,9 @@ Brain
 
 ![Brain](https://googledrive.com/host/0Bxo4bHbWEkMscmJNYkx6YXctaWM/brain.png)
 
+[![Build Status](https://api.travis-ci.org/Giuseppe-Mazzapica/Brain.svg)](https://travis-ci.org/Giuseppe-Mazzapica/Brain)
+
+
 Brain is a simple [Pimple](http://pimple.sensiolabs.org/) wrapper for WordPress.
 
 To register params and services in the container you should create a **module**, that is a class implementing `Brain\Module` inteface.
