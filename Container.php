@@ -31,10 +31,10 @@ class Container extends \Pimple {
     }
 
     public function addModule( Module $module ) {
-        if ( ! $this->brain_modules instanceof \SplObjectStorage ) {
+        if ( ! $this->getModules() instanceof \SplObjectStorage ) {
             throw new \DomainException;
         }
-        $this->brain_modules->attach( $module );
+        $this->getModules()->attach( $module );
     }
 
     public function get( $id = '' ) {
