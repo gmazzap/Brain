@@ -1,35 +1,33 @@
-<?php
-
-namespace Brain;
+<?php namespace Brain;
 
 class Container extends \Pimple {
 
-    protected static $brain;
+    private static $brain;
 
-    protected $brain_modules;
+    private $brain_modules;
 
     public static function boot( \Pimple $container, $with_modules = TRUE, $with_hooks = TRUE ) {
-        if ( is_null( static::$brain ) ) {
-            static::$brain = $container;
-            static::$brain['embedded'] = function () {
+        if ( is_null( self::$brain ) ) {
+            self::$brain = $container;
+            self::$brain['embedded'] = function () {
                 return new static;
             };
-            $instance = static::$brain['embedded'];
+            $instance = self::$brain['embedded'];
             $instance->brain_modules = new \SplObjectStorage;
             if ( $with_modules !== FALSE ) static::bootModules( $instance, $with_hooks );
         }
-        return static::$brain['embedded'];
+        return self::$brain['embedded'];
     }
 
     public static function flush() {
-        static::$brain = NULL;
+        self::$brain = NULL;
     }
 
     public static function instance() {
-        if ( is_null( static::$brain ) || ! isset( static::$brain['embedded'] ) ) {
+        if ( is_null( self::$brain ) || ! isset( self::$brain['embedded'] ) ) {
             throw new \DomainException;
         }
-        return static::$brain['embedded'];
+        return self::$brain['embedded'];
     }
 
     public function addModule( Module $module ) {
@@ -49,16 +47,24 @@ class Container extends \Pimple {
         $this[$id] = $value;
     }
 
+    protected function getModules() {
+        return $this->brain_modules;
+    }
+
     protected static function bootModules( Container $instance, $with_hooks = TRUE ) {
         // use this hook to register modules via Brain\Container::addModule()
         // or to add params/services to container thanks to the instance passed as action argument
         if ( $with_hooks ) do_action( 'brain_init', $instance );
-        $instance->brain_modules->rewind();
-        while ( $instance->brain_modules->valid() ) {
-            $module = $instance->brain_modules->current();
+        $modules = $instance->getModules();
+        if ( ! $modules instanceof \SplObjectStorage ) {
+            throw new \DomainException;
+        }
+        $modules->rewind();
+        while ( $modules->valid() ) {
+            $module = $modules->current();
             $module->getBindings( $instance );
             $module->boot( $instance );
-            $instance->brain_modules->next();
+            $modules->next();
         }
         if ( $with_hooks ) do_action( 'brain_loaded', $instance );
     }
