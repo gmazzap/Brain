@@ -8,7 +8,7 @@ Brain
 
 Brain is a simple [Pimple](http://pimple.sensiolabs.org/) wrapper for WordPress.
 
-It's the base package of the [Brain WP Project](https://github.com/Giuseppe-Mazzapica/Brain-WP-Project/blob/master/README.md#brain-wp-project).
+It's the base package of the [Brain WP Project](http://giuseppe-mazzapica.github.io/Brain).
 
 To register params and services in the container you should create a **module**, that is a class implementing `Brain\Module` inteface.
 
