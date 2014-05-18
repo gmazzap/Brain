@@ -18,9 +18,19 @@
         "php": ">=5.4",
         "pimple/pimple": "2.*"
     },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
     "autoload": {
         "files": ["boot.php"],
-        "psr-4": {"Brain\\": ""}
+        "psr-4": {
+            "Brain\\": ""
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Brain\\Tests\\": "tests/src/"
+        }
     },
     "config": {
         "optimize-autoloader": true
