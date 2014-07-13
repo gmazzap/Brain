@@ -6,6 +6,8 @@ class Container extends \Pimple {
 
     private $brain_modules;
 
+    private $brain_modules_classes = [ ];
+
     private static $modules_booted = FALSE;
 
     public static function boot( \Pimple $container, $with_modules = TRUE, $with_hooks = TRUE ) {
@@ -54,7 +56,11 @@ class Container extends \Pimple {
         if ( ! $this->getModules() instanceof \SplObjectStorage ) {
             throw new \DomainException;
         }
-        $this->getModules()->attach( $module );
+        $class = get_class( $module );
+        if ( ! in_array( $class, $this->brain_modules_classes, TRUE ) ) {
+            $this->brain_modules_classes[] = $class;
+            $this->getModules()->attach( $module );
+        }
     }
 
     public static function bootModules( Container $instance, $with_hooks = TRUE ) {
