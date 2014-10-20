@@ -1,28 +1,27 @@
 <?php namespace Brain;
 
-class Container extends \Pimple {
+use Pimple\Container as Pimple;
+
+class Container extends Pimple {
 
     private static $brain;
-
     private $brain_modules;
-
     private $brain_modules_classes = [ ];
-
     private static $modules_booted = FALSE;
 
-    public static function boot( \Pimple $container, $with_modules = TRUE, $with_hooks = TRUE ) {
+    public static function boot( Pimple $container, $with_modules = TRUE, $with_hooks = TRUE ) {
         if ( is_null( self::$brain ) ) {
             self::$brain = $container;
-            self::$brain['embedded'] = function () {
+            self::$brain[ 'embedded' ] = function () {
                 return new static;
             };
-            $instance = self::$brain['embedded'];
+            $instance = self::$brain[ 'embedded' ];
             $instance->brain_modules = new \SplObjectStorage;
             if ( $with_modules !== FALSE && ! self::$modules_booted ) {
                 static::bootModules( $instance, $with_hooks );
             }
         }
-        return self::$brain['embedded'];
+        return self::$brain[ 'embedded' ];
     }
 
     public static function flush() {
@@ -31,20 +30,20 @@ class Container extends \Pimple {
     }
 
     public static function instance() {
-        if ( is_null( self::$brain ) || ! isset( self::$brain['embedded'] ) ) {
+        if ( is_null( self::$brain ) || ! isset( self::$brain[ 'embedded' ] ) ) {
             throw new \DomainException;
         }
-        return self::$brain['embedded'];
+        return self::$brain[ 'embedded' ];
     }
 
     public function get( $id = '' ) {
         if ( ! is_string( $id ) ) throw new \InvalidArgumentException;
-        return $this[$id];
+        return $this[ $id ];
     }
 
     public function set( $id = '', $value = NULL ) {
         if ( ! is_string( $id ) ) throw new \InvalidArgumentException;
-        $this[$id] = $value;
+        $this[ $id ] = $value;
         return $this;
     }
 

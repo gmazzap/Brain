@@ -7,12 +7,12 @@ use Brain\Tests\ModuleStub;
 class ContainerTest extends TestCase {
 
     function testBootReturnContainer() {
-        $boot = Container::boot( new \Pimple, FALSE, FALSE );
+        $boot = Container::boot( new \Pimple\Container, FALSE, FALSE );
         assertInstanceOf( 'Brain\Container', $boot );
     }
 
     function testIntanceReturnContainer() {
-        $boot = Container::boot( new \Pimple, FALSE, FALSE );
+        $boot = Container::boot( new \Pimple\Container, FALSE, FALSE );
         assertTrue( $boot === Container::instance() );
     }
 
@@ -20,7 +20,7 @@ class ContainerTest extends TestCase {
      * @expectedException \InvalidArgumentException
      */
     function testGetFailsIfBadId() {
-        $boot = Container::boot( new \Pimple, FALSE, FALSE );
+        $boot = Container::boot( new \Pimple\Container, FALSE, FALSE );
         $boot->get( TRUE );
     }
 
@@ -28,14 +28,14 @@ class ContainerTest extends TestCase {
      * @expectedException \InvalidArgumentException
      */
     function testGetFailsIfNonExistentId() {
-        $boot = Container::boot( new \Pimple, FALSE, FALSE );
+        $boot = Container::boot( new \Pimple\Container, FALSE, FALSE );
         $boot->get( 'foo' );
     }
 
     function testGet() {
-        $boot = Container::boot( new \Pimple, FALSE, FALSE );
-        assertInstanceOf( 'Pimple', $boot );
-        $boot['test'] = function() {
+        $boot = Container::boot( new \Pimple\Container, FALSE, FALSE );
+        assertInstanceOf( 'Pimple\Container', $boot );
+        $boot[ 'test' ] = function() {
             return (object) [ 'foo' => 'bar' ];
         };
         assertEquals( 'bar', $boot->get( 'test' )->foo );
@@ -45,15 +45,15 @@ class ContainerTest extends TestCase {
      * @expectedException \InvalidArgumentException
      */
     function testSetFailsIfBadId() {
-        $boot = Container::boot( new \Pimple, FALSE, FALSE );
+        $boot = Container::boot( new \Pimple\Container, FALSE, FALSE );
         $boot->set( TRUE );
     }
 
     function testSet() {
-        $boot = Container::boot( new \Pimple, FALSE, FALSE );
+        $boot = Container::boot( new \Pimple\Container, FALSE, FALSE );
         $test = (object) [ 'foo' => 'bar' ];
         $boot->set( 'test', $test );
-        assertTrue( $test === $boot['test'] );
+        assertTrue( $test === $boot[ 'test' ] );
     }
 
     /**
@@ -65,14 +65,14 @@ class ContainerTest extends TestCase {
     }
 
     function testAddModule() {
-        $boot = Container::boot( new \Pimple, FALSE, FALSE );
+        $boot = Container::boot( new \Pimple\Container, FALSE, FALSE );
         $boot->addModule( new ModuleStub );
         Container::bootModules( $boot, FALSE );
         assertInstanceOf( 'Brain\Tests\ServiceStub', $boot->get( 'brain.tests.stub' ) );
     }
 
     function testBootModules() {
-        $boot = Container::boot( new \Pimple, FALSE, FALSE );
+        $boot = Container::boot( new \Pimple\Container, FALSE, FALSE );
         $boot->addModule( new ModuleStub );
         Container::bootModules( $boot, FALSE );
         $service = $boot->get( 'brain.tests.stub' )->set();
