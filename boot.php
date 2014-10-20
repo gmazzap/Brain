@@ -3,6 +3,6 @@ if ( ! class_exists( 'Brain\Container' ) ) require_once __DIR__ . '/vendor/autol
 
 if ( function_exists( 'add_action' ) ) {
     add_action( 'after_setup_theme', function() {
-        Brain\Container::boot( new \Pimple );
+        Brain\Container::boot( new \Pimple\Container );
     }, 0 );
 }
