@@ -22,7 +22,7 @@
         "phpunit/phpunit": "3.7.*"
     },
     "autoload": {
-        "files": ["boot.php"],
+        "files": [ "boot.php" ],
         "psr-4": {
             "Brain\\": ""
         }
@@ -36,5 +36,10 @@
     "prefer-stable": true,
     "config": {
         "optimize-autoloader": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
+        }
     }
 }
