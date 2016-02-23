@@ -1,11 +1,6 @@
 Brain
 =====
 
-![Brain](https://googledrive.com/host/0Bxo4bHbWEkMscmJNYkx6YXctaWM/brain.png)
-
-[![Build Status](https://api.travis-ci.org/Giuseppe-Mazzapica/Brain.svg)](https://travis-ci.org/Giuseppe-Mazzapica/Brain)
-
-
 Brain is a simple [Pimple](http://pimple.sensiolabs.org/) wrapper for WordPress.
 
 It's the base package of the [Brain Project](http://giuseppe-mazzapica.github.io/Brain).
@@ -29,17 +24,17 @@ The `'brain_loaded'` hook is fired when all modules has been loaded.
 ###First define a service###
 
     class FooService {
-    
+
       function foo( $foo = '' ) {
         echo '<p>Foo is ' . $foo . '</p>';
       }
-      
+
     }
 
 ###Then define a Brain module###
 
     class FooModule implements Brain\Module {
-	
+
       function getBindings( Brain\Container $brain ) {
         $brain['foo'] = 'bar';
         $brain['foo_service'] = function() { return new FooService; };
@@ -50,7 +45,7 @@ The `'brain_loaded'` hook is fired when all modules has been loaded.
           $brain['foo_service']->foo( $brain['foo'] );
         });
       }
-	  
+
       function getPath() {
         return dirname( __FILE__ );
       }
@@ -61,21 +56,21 @@ The `'brain_loaded'` hook is fired when all modules has been loaded.
     add_action( 'brain_init', function( $brain ) {
       $brain->addModule( new FooModule );
     });
-    
+
 See [Pimple docs](http://pimple.sensiolabs.org/) for more info.
-    
-    
+
+
 ###Get data from Brain###
 
 To get services registered is possible to use the `Brain::instance()` static method and use the array access method of Pimple, something like:
 
     $brain = Brain::instance();
     $foo_service = $brain['foo_service'];
-    
+
 or is possible to use the Brain `get` method, in chaining it with the `instance` method, just like:
 
     $foo_service = Brain::instance()->get('foo_service');
-    
+
 
 ##Installation##
 
@@ -87,12 +82,12 @@ Something like so:
         "php": ">=5.4",
         "brain/brain": "dev-master"
     }
-    
+
 There is no need to explicitly require Pimple, because Brain will require it for you.
 after that just
 
     $ composer install
-    
+
 and you are done. See [composer docs](https://getcomposer.org/doc/) for further details.
 
 
@@ -101,11 +96,10 @@ and you are done. See [composer docs](https://getcomposer.org/doc/) for further 
 Pimple supports PHP 5.3+, however I don't want to support anymore that version, so even if (probably) the current version on Brain works with PHP 5.3, is possible that a nearly future release will not, I'll never test it.
 
 ##Related WordPress hooks##
-    
+
 Brain init itself and its modules on `'after_setup_theme'` with priority 0, a reasonably early hook that can be used in plugin and themes.
 The Brain-related hooks are:
 
 * `'brain_init'` to register modules (see above)
 * `'brain_loaded'` is fired when all modules are loaded
 * `'after_setup_theme'` with priority >= 1 (or any later hook) to get data from the container
-	
